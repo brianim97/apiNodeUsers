@@ -1,17 +1,20 @@
+const res = require('express/lib/response');
 const Role = require('../models/role');
 const User = require('../models/user');
 
 
 const isValidRole = async(rol = '')=>{
-    console.log(rol);
     
-    const existRol = await Role.findOne({rol});
+         console.log('este es el rol'+rol);
     
-    console.log(existRol);
-    
-    if(!existRol){
-        throw new Error(`El rol ${rol} no esta registrado en la DB`)
-    }
+        const existRol = await Role.findOne({rol});
+        
+        console.log(existRol);
+        
+        if(!existRol){
+            throw new Error(`El rol ${rol} no esta registrado en la DB`)
+        }
+   
 }
 
 const existMail = async(mail='')=>{

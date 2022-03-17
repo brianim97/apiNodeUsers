@@ -43,7 +43,7 @@ class Server{
 
     listen(){
         this.app.listen(process.env.PORT,()=>{
-            console.log(`SERVER ON: http://localhost:3000/`);
+            console.log(`SERVER ON: http://localhost:${process.env.PORT}/`);
         });
 
     }

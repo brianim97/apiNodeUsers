@@ -7,6 +7,50 @@
     <title>Acceso Denegado</title>
 </head>
 <body>
-    <h1>Api de prueba - <h4><strong>Brian Iriarte</strong></h4></h1>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <div id="g_id_onload"
+       data-client_id="133438523338-n36h8b8blcti5gd0p009h55arfuvgckt.apps.googleusercontent.com"
+       data-callback="handleCredentialResponse"
+       data-auto_prompt="false">
+    </div>
+    <div class="g_id_signin"
+       data-type="standard"
+       data-size="large"
+       data-theme="outline"
+       data-text="sign_in_with"
+       data-shape="rectangular"
+       data-logo_alignment="left">
+    </div>
+    <script>
+        function handleCredentialResponse(response) {
+
+            //Google Token: ID_TOKEN
+
+            const credentials = {id_token:response.credential};
+            console.log('id_token:',response.credential);
+            fetch('http://localhost:3001/api/auth/google',{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify(credentials)
+            })
+            .then(res=>res.json())
+            .then(res=>console.log(res))
+            .catch(console.warn())
+            
+
+           // decodeJwtResponse() is a custom function defined by you
+           // to decode the credential response.
+        //    const responsePayload = decodeJwtResponse(response.credential);
+      
+        //    console.log("ID: " + responsePayload.sub);
+        //    console.log('Full Name: ' + responsePayload.name);
+        //    console.log('Given Name: ' + responsePayload.given_name);
+        //    console.log('Family Name: ' + responsePayload.family_name);
+        //    console.log("Image URL: " + responsePayload.picture);
+        //    console.log("Email: " + responsePayload.email);
+        }
+      </script>
 </body>
 </html>

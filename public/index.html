@@ -21,6 +21,9 @@
        data-shape="rectangular"
        data-logo_alignment="left">
     </div>
+    <button id="google_signout">
+        Sign Out
+    </button>
     <script>
         function handleCredentialResponse(response) {
 
@@ -36,9 +39,22 @@
                 body:JSON.stringify(credentials)
             })
             .then(res=>res.json())
-            .then(res=>console.log(res))
+            .then(res=>{
+                console.log(res)
+                localStorage.setItem('mail',res.user.mail)
+            })
             .catch(console.warn())
-            
+        }
+         let btnSignOut = document.getElementById('google_signout');
+         
+         btnSignOut.addEventListener('click',()=>{
+             google.accounts.id.disableAutoSelect();
+             google.accounts.id.revoke(localStorage.getItem('mail'), done=>{
+                 localStorage.clear();
+                 location.reload();
+             })
+             
+         })
 
            // decodeJwtResponse() is a custom function defined by you
            // to decode the credential response.
@@ -50,7 +66,6 @@
         //    console.log('Family Name: ' + responsePayload.family_name);
         //    console.log("Image URL: " + responsePayload.picture);
         //    console.log("Email: " + responsePayload.email);
-        }
       </script>
 </body>
 </html>

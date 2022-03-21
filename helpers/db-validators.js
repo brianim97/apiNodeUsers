@@ -1,4 +1,5 @@
 const res = require('express/lib/response');
+const Categorie = require('../models/categorie');
 const Role = require('../models/role');
 const User = require('../models/user');
 
@@ -34,9 +35,18 @@ const exisUserForID = async(id)=>{
           throw new Error(`El id ${id} no existe`)
       }
 }
+const existCategorieForID = async(id)=>{
+
+    //Verifiar si el id existe
+    const categorieExist =  await Categorie.findById(id);
+    if(!categorieExist){
+        throw new Error(`El id ${id} no existe`)
+    }
+}
 
 module.exports = {
     isValidRole,
     existMail,
-    exisUserForID
+    exisUserForID,
+    existCategorieForID
 }

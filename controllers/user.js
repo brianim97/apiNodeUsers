@@ -51,7 +51,7 @@ const usersPut = async(req,res = response)=>{
 
     }
 
-    const userDB = await User.findByIdAndUpdate(id, resto)
+    const userDB = await User.findByIdAndUpdate(id, resto,{new:true})
 
     res.json(userDB)
 }

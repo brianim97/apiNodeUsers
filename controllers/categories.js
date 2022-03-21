@@ -3,8 +3,17 @@ const Categorie = require('../models/categorie')
 
 
 const categorieGet = async(req = request , res = response)=>{
-    const categories = await Categorie.find({status:true})
-    res.json(categories)
+    const query = {status:true}
+
+    const [total,categories] = await Promise.all([
+        Categorie.countDocuments(query),
+        Categorie.find(query)
+        .populate('user','name')
+    ])
+    res.json({
+        total,
+        categories
+    })
 }
 const categorieGetId = async(req = request , res = response)=>{
     const {id} = req.params;
@@ -42,7 +51,7 @@ const categoriePut = async(req = request , res = response)=>{
         return res.status(400).json({msg:"Este nombre ya se encuentra en uso"})
     }
 
-    const categorie = await Categorie.findByIdAndUpdate(id,{name,user})
+    const categorie = await Categorie.findByIdAndUpdate(id,{name,user},{new:true})
 
     res.json(categorie)
      

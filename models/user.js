@@ -1,6 +1,6 @@
 const {Schema, model} = require('mongoose')
 
-const UserShema = Schema({
+const UserSchema = Schema({
     name:{
         type: String,
         required:[true,'El nombre es obligatiorio'],
@@ -33,9 +33,9 @@ const UserShema = Schema({
 })
 
 //modifico el objeto user para que no devuelva los datos que no quiero que el usuario vea
-UserShema.methods.toJSON = function(){
+UserSchema.methods.toJSON = function(){
     const {__v, password, _id, ...user} = this.toObject();
     user.uid = _id;
     return user;
 }
-module.exports = model('User',UserShema);
+module.exports = model('User',UserSchema);

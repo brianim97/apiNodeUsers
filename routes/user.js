@@ -11,6 +11,7 @@ const router = Router();
 router.get('/',usersGet)
 
 router.put('/:id',[
+    validarJwt,
     check('id','No es un ID valido').isMongoId(),
     check('id').custom(exisUserForID),
     // check('rol').custom(isValidRole),
@@ -19,6 +20,8 @@ router.put('/:id',[
 ],usersPut)
 
 router.post('/',[
+    validarJwt,
+    isAdminRol,
     check('name','El nombre es obligatorio').not().isEmpty(),
     check('password','La contraseña debe contener al menos 6 letras').isLength({min:6}),
     check('mail','El email es invalido').isEmail(),
@@ -38,6 +41,5 @@ router.delete('/:id',[
     validarCampos
 ],usersDelete)
 
-router.patch('/',usersPatch)
 
 module.exports = router;

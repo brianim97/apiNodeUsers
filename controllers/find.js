@@ -37,13 +37,13 @@ const findCategorie = async(term = '', res=response)=>{
     const isMongoId = ObjectId.isValid(term)
 
     if(isMongoId){
-        const categorie = await Categorie.findById(term)
+        const categorie = await Categorie.findOne({id:term,status:true})
         return res.json({
             results: (categorie) ? [categorie] : []
         })
     }
     const regex = new RegExp(term, 'i');
-    const categories  = await Categorie.find({name:regex})
+    const categories  = await Categorie.find({name:regex,status:true})
 
 
     res.json({
@@ -56,14 +56,14 @@ const findProduct = async(term = '', res = response)=>{
     const isMongoId = ObjectId.isValid(term)
 
     if(isMongoId){
-        const product = await Product.find({name:term})
+        const product = await Product.findOne({name:term,status:true}).populate('categorie','name')
         return res.json({
             results: (product) ? [product] : []
         })
     }
 
     const regex = new RegExp(term, 'i');
-    const products  = await Product.find({name:regex})
+    const products  = await Product.find({name:regex,status:true}).populate('categorie','name')
 
 
     res.json({

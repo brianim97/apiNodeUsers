@@ -1,6 +1,5 @@
 const bcrypt = require("bcryptjs/dist/bcrypt")
 const { response } = require("express")
-const { json } = require("express/lib/response")
 const { createJwt } = require("../helpers/createJwt")
 const { googleVerify } = require("../helpers/google-verify")
 const User = require("../models/user")
@@ -51,7 +50,7 @@ const login = async(req, res = response)=>{
         console.log(error);
         
         return res.status(500).json({
-            msg:"Error comuniquese con el administrador del sitio"
+            msg:`Error: ${error}`
         })
     }
 }

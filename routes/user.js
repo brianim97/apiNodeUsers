@@ -8,7 +8,8 @@ const {validarJwt} = require('../middlewares/validar-jwt')
 const {haveRol,isAdminRol} = require('../middlewares/validar-roles')
 const router = Router();
 
-router.get('/',usersGet)
+router.get('/',[validarJwt],
+usersGet)
 
 router.put('/:id',[
     validarJwt,

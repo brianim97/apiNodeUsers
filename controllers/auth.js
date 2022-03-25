@@ -1,4 +1,4 @@
-const bcrypt = require("bcryptjs/dist/bcrypt")
+const bcrypt = require("bcryptjs")
 const { response } = require("express")
 const { createJwt } = require("../helpers/createJwt")
 const { googleVerify } = require("../helpers/google-verify")

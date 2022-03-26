@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs")
 const { response } = require("express")
+const jwt = require("jsonwebtoken")
 const { createJwt } = require("../helpers/createJwt")
 const { googleVerify } = require("../helpers/google-verify")
 const User = require("../models/user")
@@ -9,8 +10,6 @@ const login = async(req, res = response)=>{
     const {mail,password} = req.body
 
     try {
-       
-
         //Verificar si el mail existe
         const user = await User.findOne({mail})  
 
@@ -105,7 +104,44 @@ const googleSignIn = async(req,res = response)=>{
 
 }
 
+const validarJwtEndpoint = async(req,res)=>{
+    const token = req.header('x-token')
+    
+    if(!token){
+        return res.status(401).json({
+            msg:"No hay toquen de autorizacion"
+        })
+    }
+
+    try {
+        const {uid} = jwt.verify(token,process.env.SECRETORPRIVATEKEY)
+
+        //leer el usuario que corresponde al uid
+        const user = await User.findById(uid);
+
+        if(!user){
+            return res.status(401).json(
+                {msg:"Token no valido - usuario no existente"}
+            )
+        }
+
+        // Verificar su el uid tiene status en true
+        if(!user.status){
+            return res.status(401).json(
+                {msg:"Token no valido - usuario deshabilitado"}
+            )
+        }
+        res.status(204).json({msg:'token verificado'});
+    } catch (error) {
+        return res.status(401).json({
+            error:'token error'
+        })
+    }
+}
+
+
 module.exports = {
     login,
-    googleSignIn
+    googleSignIn,
+    validarJwtEndpoint
 };

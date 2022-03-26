@@ -9,6 +9,7 @@ const productGet = async(req = request , res = response)=>{
         Product.countDocuments(query),
         Product.find(query)
         .populate('user','name')
+        .populate('categorie','name')
     ])
     res.json({
         total,

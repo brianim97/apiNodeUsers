@@ -1,8 +1,9 @@
 const bcrypt = require("bcryptjs")
 const { response } = require("express")
 const jwt = require("jsonwebtoken")
-const { createJwt } = require("../helpers/createJwt")
-const { googleVerify } = require("../helpers/google-verify")
+
+const {createJwt,googleVerify} = require("../helpers")
+
 const User = require("../models/user")
 
 const login = async(req, res = response)=>{
@@ -36,9 +37,6 @@ const login = async(req, res = response)=>{
     }
         //Generar el JWT
         const token = await createJwt(user.id);
-
-
-
 
         res.json({
             user,
